@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
                   onTap: () => calendarBloc.selectPrevMonth(),
                   child: const Text("prev month"),
                 ),
+                const SizedBox(width: 12),
                 GestureDetector(
                   onTap: () => calendarBloc.selectNextMonth(),
                   child: const Text("next month"),

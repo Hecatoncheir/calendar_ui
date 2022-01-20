@@ -30,7 +30,6 @@ dart_code_metrics:
     - avoid-ignoring-return-values:
       exclude:
         - test/**
-    #    - avoid-late-keyword
     - avoid-non-null-assertion
     - avoid-unused-parameters
     - binary-expression-operand-order
@@ -57,7 +56,6 @@ dart_code_metrics:
     - prefer-trailing-comma:
         exclude:
           - test/**
-    - check-unused-l10n command
     # Flutter specific
     - always-remove-listener
     - avoid-returning-widgets
