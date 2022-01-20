@@ -36,7 +36,7 @@ class MyApp extends StatelessWidget {
               child: Row(
                 children: [
                   Expanded(
-                    child: CalendarUI(
+                    child: CalendarMonthUI(
                       calendarBloc: calendarBloc,
                       cellBuilder: (context, child, month, weekNumber, day) {
                         final isDayIsWeekend =

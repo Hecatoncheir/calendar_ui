@@ -3,30 +3,9 @@ import 'dart:async';
 import 'package:meta/meta.dart';
 import 'package:calendar/calendar.dart';
 
+part 'calendar_bloc_interface.dart';
 part 'calendar_event.dart';
 part 'calendar_state.dart';
-
-abstract class CalendarBlocInterface {
-  StreamController<CalendarEvent> getEventController();
-  Stream<CalendarState> getStateStream();
-
-  void dispose();
-
-  Month getSelectedMonth();
-  Month? selectMonth(int month);
-  Month selectPrevMonth();
-  Month selectNextMonth();
-
-  Year getSelectedYear();
-  Year? selectYear(int year);
-  Year selectPrevYear();
-  Year selectNextYear();
-
-  Day? getSelectedDay();
-  Day? selectDay(int year, int month, int day);
-
-  Map<int, Map<int, Day?>> getFullWeeksOfSelectedMonth();
-}
 
 class CalendarBloc implements CalendarBlocInterface {
   late final Calendar _calendar;
@@ -90,7 +69,7 @@ class CalendarBloc implements CalendarBlocInterface {
   }
 
   Future<void> getFullWeeksOfSelectedMonthHandler(
-    GetFullWeeksOfSelectedMonth event,
+    GetFullWeeksOfSelectedMonth _,
   ) async =>
       getFullWeeksOfSelectedMonth();
 
