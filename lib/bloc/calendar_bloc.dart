@@ -225,7 +225,7 @@ class CalendarBloc implements CalendarBlocInterface {
 
   @override
   Day? selectDay(int year, int month, int day) {
-    if (year != _calendar.getSelectedYear().getYear()) {
+    if (year != _calendar.getSelectedYear().getYearNumber()) {
       selectYear(year);
     }
 
