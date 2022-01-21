@@ -22,22 +22,27 @@ dart_code_metrics:
   metrics:
     cycloramic-complexity: 5
     maximum-nesting-level: 5
-    number-of-parameters: 4
+    number-of-parameters: 5
     source-lines-of-code: 250
   metrics-exclude:
     - test/**
   rules:
+    - avoid-global-state
     - avoid-ignoring-return-values:
       exclude:
         - test/**
+    - avoid-missing-enum-constant-in-map
+    #    - avoid-throw-in-catch-block
+    - avoid-unnecessary-type-casts
     - avoid-non-null-assertion
+    - avoid-unrelated-type-assertions
     - avoid-unused-parameters
     - binary-expression-operand-order
     - double-literal-format
-    - member-ordering:
+    - member-ordering-extended:
         exclude:
           - test/**
-    - member-ordering-extended:
+    - member-ordering:
         exclude:
           - test/**
     - newline-before-return:
@@ -45,6 +50,10 @@ dart_code_metrics:
           - test/**
     - no-boolean-literal-compare
     - no-empty-block
+    #    - no-equal-arguments:
+    #        ignored-parameters:
+    #          - height
+    #          - width
     - no-equal-then-else
     - no-magic-number:
         exclude:
@@ -53,9 +62,27 @@ dart_code_metrics:
           - lib/theme/**
     - no-object-declaration
     - prefer-conditional-expressions
+    - prefer-correct-identifier-length:
+        exceptions: [ 'z', ]
+        max-identifier-length: 45
+        min-identifier-length: 3
+    - prefer-correct-type-name:
+        #        excluded: [ '' ]
+        min-length: 3
+        max-length: 40
+    - prefer-first:
+        exclude:
+          - test/**
+    - prefer-last:
+        exclude:
+          - test/**
+    - prefer-match-file-name:
+        exclude:
+          - test/**
     - prefer-trailing-comma:
         exclude:
           - test/**
+
     # Flutter specific
     - always-remove-listener
     - avoid-returning-widgets
