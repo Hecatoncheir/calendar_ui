@@ -6,18 +6,18 @@ import 'package:calendar/calendar.dart' as utils;
 typedef CellBuilder = Widget Function(
   BuildContext context,
   Widget child,
-  utils.Month month,
+  utils.MonthInterface month,
   int weekNumber,
-  utils.Day day,
+  utils.DayInterface day,
 );
 
 typedef DayBuilder = Widget Function(
-  utils.Month selectedMonth,
-  utils.Day day,
+  utils.MonthInterface selectedMonth,
+  utils.DayInterface day,
 );
 
 typedef HeaderDayOfTheWeekBuilder = Widget Function(int weekDayNumber);
-typedef MonthNameBuilder = Widget Function(utils.Month month);
+typedef MonthNameBuilder = Widget Function(utils.MonthInterface month);
 
 class CalendarMonthUI extends StatefulWidget {
   final CalendarBlocInterface calendarBloc;
@@ -82,8 +82,8 @@ class _CalendarMonthUIState extends State<CalendarMonthUI> {
   }
 
   Widget buildMonth({
-    required utils.Month month,
-    required Map<int, Map<int, utils.Day?>> fullWeeksOfMonth,
+    required utils.MonthInterface month,
+    required List<utils.WeekInterface> fullWeeksOfMonth,
   }) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -97,19 +97,18 @@ class _CalendarMonthUIState extends State<CalendarMonthUI> {
                 ? Container()
                 : widget.monthNameBuilder!(month),
         buildDaysOfTheWeekHeader(),
-        for (final weekNumber in fullWeeksOfMonth.keys)
+        for (final week in fullWeeksOfMonth)
           Expanded(
             child: buildWeek(
               month: month,
-              weekNumber: weekNumber,
-              weekWithDays: fullWeeksOfMonth[weekNumber]!,
+              week: week,
             ),
           ),
       ],
     );
   }
 
-  Widget buildMonthName(utils.Month month) {
+  Widget buildMonthName(utils.MonthInterface month) {
     String nameOfMonth = "";
     if (month.getMonthNumber() == DateTime.january) nameOfMonth = "Январь";
     if (month.getMonthNumber() == DateTime.february) nameOfMonth = "Февраль";
@@ -156,13 +155,12 @@ class _CalendarMonthUIState extends State<CalendarMonthUI> {
   }
 
   Widget buildWeek({
-    required utils.Month month,
-    required int weekNumber,
-    required Map<int, utils.Day?> weekWithDays,
+    required utils.MonthInterface month,
+    required utils.WeekInterface week,
   }) {
     return Row(
       children: [
-        for (final dayNumberOfWeek in weekWithDays.keys)
+        for (final dayNumberOfWeek in week.getDaysOfWeek().keys)
           Expanded(
             key: Key(
               month.getYear().toString() +
@@ -174,25 +172,26 @@ class _CalendarMonthUIState extends State<CalendarMonthUI> {
             child: widget.cellBuilder == null
                 ? buildDayLayout(
                     month: month,
-                    day: weekWithDays[dayNumberOfWeek]!,
+                    day: week.getDayOfWeek(dayNumberOfWeek)!,
                   )
                 : widget.cellBuilder!(
                     context,
                     buildDayLayout(
                       month: month,
-                      day: weekWithDays[dayNumberOfWeek]!,
+                      day: week.getDayOfWeek(dayNumberOfWeek)!,
                     ),
                     month,
-                    weekNumber,
-                    weekWithDays[dayNumberOfWeek]!),
+                    week.getWeekNumberInMonth(),
+                    week.getDayOfWeek(dayNumberOfWeek)!,
+                  ),
           ),
       ],
     );
   }
 
   Widget buildDayLayout({
-    required utils.Month month,
-    required utils.Day day,
+    required utils.MonthInterface month,
+    required utils.DayInterface day,
   }) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -211,7 +210,10 @@ class _CalendarMonthUIState extends State<CalendarMonthUI> {
                       "-" +
                       day.getDay().toString(),
                 ),
-                child: buildDay(selectedMonth: month, day: day),
+                child: buildDay(
+                  selectedMonth: month,
+                  day: day,
+                ),
               ),
             ],
           ),
@@ -221,8 +223,8 @@ class _CalendarMonthUIState extends State<CalendarMonthUI> {
   }
 
   Widget buildDay({
-    required utils.Month selectedMonth,
-    required utils.Day day,
+    required utils.MonthInterface selectedMonth,
+    required utils.DayInterface day,
   }) {
     return widget.dayBuilder == null
         ? Text(day.getDay().toString())
