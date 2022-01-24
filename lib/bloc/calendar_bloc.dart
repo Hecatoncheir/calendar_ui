@@ -16,11 +16,13 @@ class CalendarBloc implements CalendarBlocInterface {
   late final StreamController<CalendarState> _stateController;
   late final Stream<CalendarState> _stateStream;
 
-  CalendarBloc.forDay({
-    required int year,
-    required int month,
-    required int day,
-  }) : _calendar = Calendar.forDay(year: year, month: month, day: day) {
+  CalendarBloc(DateTime dateTime) {
+    _calendar = Calendar.forDay(
+      year: dateTime.year,
+      month: dateTime.month,
+      day: dateTime.day,
+    );
+
     _eventController = StreamController<CalendarEvent>();
     _eventStream = _eventController.stream.asBroadcastStream();
 
@@ -28,37 +30,23 @@ class CalendarBloc implements CalendarBlocInterface {
     _stateStream = _stateController.stream.asBroadcastStream();
 
     _eventStream.listen((event) {
-      if (event is GetFullWeeksOfSelectedMonth) {
-        getFullWeeksOfSelectedMonthHandler(event);
+      if (event is YearSelected) _yearSelectedEventHandler(event);
+      if (event is MonthSelected) _monthSelectedEventHandler(event);
+      if (event is DaySelected) _daySelectedEventHandler(event);
+
+      if (event is GetWeeksOfSelectedMonth) {
+        _getWeeksOfSelectedMonthEventHandler(event);
       }
 
-      if (event is MonthSelected) monthSelectedHandler(event);
-      if (event is YearSelected) yearSelectedHandler(event);
-      if (event is DaySelected) daySelectedHandler(event);
-    });
-  }
-
-  CalendarBloc.forMonth({
-    required int year,
-    required int month,
-  }) : _calendar = Calendar.forMonth(
-          year: year,
-          month: month,
-        ) {
-    _eventController = StreamController<CalendarEvent>();
-    _eventStream = _eventController.stream.asBroadcastStream();
-
-    _stateController = StreamController<CalendarState>();
-    _stateStream = _stateController.stream.asBroadcastStream();
-
-    _eventStream.listen((event) {
-      if (event is GetFullWeeksOfSelectedMonth) {
-        getFullWeeksOfSelectedMonthHandler(event);
+      if (event is GetSelectedWeek) {
+        _getSelectedWeekEventHandler(event);
       }
 
-      if (event is MonthSelected) monthSelectedHandler(event);
-      if (event is YearSelected) yearSelectedHandler(event);
-      if (event is DaySelected) daySelectedHandler(event);
+      if (event is SelectPrevMonth) _selectPrevMonthEventHandler(event);
+      if (event is SelectNextMonth) _selectNextMonthEventHandler(event);
+
+      if (event is SelectPrevWeek) _selectPrevWeekEventHandler(event);
+      if (event is SelectNextWeek) _selectNextWeekEventHandler(event);
     });
   }
 
@@ -68,97 +56,33 @@ class CalendarBloc implements CalendarBlocInterface {
     _stateController.close();
   }
 
-  Future<void> getFullWeeksOfSelectedMonthHandler(
-    GetFullWeeksOfSelectedMonth _,
-  ) async =>
-      getFullWeeksOfSelectedMonth();
+  @override
+  StreamController<CalendarEvent> getController() => _eventController;
 
-  Future<void> monthSelectedHandler(
+  @override
+  Stream<CalendarState> getStream() => _stateStream;
+
+  Future<void> _monthSelectedEventHandler(
     MonthSelected event,
-  ) async =>
-      selectMonth(event.monthNumber);
+  ) async {
+    final month = event.month;
 
-  Future<void> yearSelectedHandler(
-    YearSelected event,
-  ) async =>
-      selectMonth(event.yearNumber);
-
-  Future<void> daySelectedHandler(
-    DaySelected event,
-  ) async =>
-      selectDay(event.yearNumber, event.monthNumber, event.dayNumber);
-
-  @override
-  StreamController<CalendarEvent> getEventController() => _eventController;
-
-  @override
-  Stream<CalendarState> getStateStream() => _stateStream;
-
-  @override
-  List<WeekInterface> getFullWeeksOfSelectedMonth() {
-    final state = FullWeeksOfSelectedMonth(
-      month: _calendar.getSelectedMonth(),
-      monthFullWeeks: _calendar.getFullWeeksOfSelectedMonth(),
-    );
-
-    _stateController.add(state);
-
-    return _calendar.getFullWeeksOfSelectedMonth();
-  }
-
-  @override
-  MonthInterface getSelectedMonth() => _calendar.getSelectedMonth();
-
-  @override
-  YearInterface getSelectedYear() => _calendar.getSelectedYear();
-
-  @override
-  DayInterface? getSelectedDay() => _calendar.getSelectedDay();
-
-  @override
-  MonthInterface? selectMonth(int month) {
     _calendar.selectMonth(month);
 
     final state = MonthSelect(
+      year: _calendar.getSelectedYear(),
       month: _calendar.getSelectedMonth(),
       monthFullWeeks: _calendar.getFullWeeksOfSelectedMonth(),
     );
 
     _stateController.add(state);
-
-    return _calendar.getSelectedMonth();
   }
 
-  @override
-  MonthInterface selectPrevMonth() {
-    _calendar.selectPrevMonth();
+  Future<void> _yearSelectedEventHandler(
+    YearSelected event,
+  ) async {
+    final year = event.year;
 
-    final state = MonthSelect(
-      month: _calendar.getSelectedMonth(),
-      monthFullWeeks: _calendar.getFullWeeksOfSelectedMonth(),
-    );
-
-    _stateController.add(state);
-
-    return _calendar.getSelectedMonth();
-  }
-
-  @override
-  MonthInterface selectNextMonth() {
-    _calendar.selectNextMonth();
-
-    final state = MonthSelect(
-      month: _calendar.getSelectedMonth(),
-      monthFullWeeks: _calendar.getFullWeeksOfSelectedMonth(),
-    );
-
-    _stateController.add(state);
-
-    return _calendar.getSelectedMonth();
-  }
-
-  @override
-  YearInterface? selectYear(int year) {
     _calendar.selectYear(year);
 
     final state = YearSelect(
@@ -168,48 +92,37 @@ class CalendarBloc implements CalendarBlocInterface {
     );
 
     _stateController.add(state);
-
-    return _calendar.getSelectedYear();
   }
 
-  @override
-  YearInterface selectPrevYear() {
-    _calendar.selectPrevYear();
+  Future<void> _daySelectedEventHandler(
+    DaySelected event,
+  ) async {
+    final year = event.year;
+    final month = event.month;
+    final day = event.day;
 
-    final state = YearSelect(
-      year: _calendar.getSelectedYear(),
-      month: _calendar.getSelectedMonth(),
-      monthFullWeeks: _calendar.getFullWeeksOfSelectedMonth(),
-    );
-
-    _stateController.add(state);
-
-    return _calendar.getSelectedYear();
-  }
-
-  @override
-  YearInterface selectNextYear() {
-    _calendar.selectNextYear();
-
-    final state = YearSelect(
-      year: _calendar.getSelectedYear(),
-      month: _calendar.getSelectedMonth(),
-      monthFullWeeks: _calendar.getFullWeeksOfSelectedMonth(),
-    );
-
-    _stateController.add(state);
-
-    return _calendar.getSelectedYear();
-  }
-
-  @override
-  DayInterface? selectDay(int year, int month, int day) {
     if (year != _calendar.getSelectedYear().getYearNumber()) {
-      selectYear(year);
+      _calendar.selectYear(year);
+
+      final state = YearSelect(
+        year: _calendar.getSelectedYear(),
+        month: _calendar.getSelectedMonth(),
+        monthFullWeeks: _calendar.getFullWeeksOfSelectedMonth(),
+      );
+
+      _stateController.add(state);
     }
 
     if (month != _calendar.getSelectedMonth().getMonthNumber()) {
-      selectMonth(month);
+      _calendar.selectMonth(month);
+
+      final state = MonthSelect(
+        year: _calendar.getSelectedYear(),
+        month: _calendar.getSelectedMonth(),
+        monthFullWeeks: _calendar.getFullWeeksOfSelectedMonth(),
+      );
+
+      _stateController.add(state);
     }
 
     final selectedDay = _calendar.getSelectedMonth().getDay(day);
@@ -218,11 +131,84 @@ class CalendarBloc implements CalendarBlocInterface {
     final state = DaySelect(
       year: _calendar.getSelectedYear(),
       month: _calendar.getSelectedMonth(),
+      week: _calendar.getSelectedWeek(),
       day: selectedDay,
     );
 
     _stateController.add(state);
+  }
 
-    return selectedDay;
+  Future<void> _getWeeksOfSelectedMonthEventHandler(
+    GetWeeksOfSelectedMonth _,
+  ) async {
+    final state = WeeksOfSelectedMonth(
+      year: _calendar.getSelectedYear(),
+      month: _calendar.getSelectedMonth(),
+      monthFullWeeks: _calendar.getFullWeeksOfSelectedMonth(),
+    );
+
+    _stateController.add(state);
+  }
+
+  Future<void> _getSelectedWeekEventHandler(
+    GetSelectedWeek _,
+  ) async {
+    final state = SelectedWeek(
+      year: _calendar.getSelectedYear(),
+      month: _calendar.getSelectedMonth(),
+      week: _calendar.getSelectedWeek(),
+    );
+
+    _stateController.add(state);
+  }
+
+  Future<void> _selectPrevMonthEventHandler(SelectPrevMonth _) async {
+    _calendar.selectPrevMonth();
+
+    final state = MonthSelect(
+      year: _calendar.getSelectedYear(),
+      month: _calendar.getSelectedMonth(),
+      monthFullWeeks: _calendar.getFullWeeksOfSelectedMonth(),
+    );
+
+    _stateController.add(state);
+  }
+
+  Future<void> _selectNextMonthEventHandler(SelectNextMonth _) async {
+    _calendar.selectNextMonth();
+
+    final state = MonthSelect(
+      year: _calendar.getSelectedYear(),
+      month: _calendar.getSelectedMonth(),
+      monthFullWeeks: _calendar.getFullWeeksOfSelectedMonth(),
+    );
+
+    _stateController.add(state);
+  }
+
+  Future<void> _selectPrevWeekEventHandler(SelectPrevWeek _) async {
+    _calendar.selectPrevWeek();
+
+    final state = WeekSelect(
+      year: _calendar.getSelectedYear(),
+      month: _calendar.getSelectedMonth(),
+      monthFullWeeks: _calendar.getFullWeeksOfSelectedMonth(),
+      week: _calendar.getSelectedWeek(),
+    );
+
+    _stateController.add(state);
+  }
+
+  Future<void> _selectNextWeekEventHandler(SelectNextWeek _) async {
+    _calendar.selectNextWeek();
+
+    final state = WeekSelect(
+      year: _calendar.getSelectedYear(),
+      month: _calendar.getSelectedMonth(),
+      monthFullWeeks: _calendar.getFullWeeksOfSelectedMonth(),
+      week: _calendar.getSelectedWeek(),
+    );
+
+    _stateController.add(state);
   }
 }

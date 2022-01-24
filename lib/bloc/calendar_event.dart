@@ -1,36 +1,60 @@
 part of 'calendar_bloc.dart';
 
 @immutable
-abstract class CalendarEvent {}
+abstract class CalendarEvent {
+  const CalendarEvent();
+}
 
-class MonthSelected extends CalendarEvent {
-  final int yearNumber;
-  final int monthNumber;
+class YearSelected extends CalendarEvent {
+  final int year;
 
-  MonthSelected({
-    required this.yearNumber,
-    required this.monthNumber,
+  YearSelected({
+    required this.year,
   });
 }
 
-class GetFullWeeksOfSelectedMonth extends CalendarEvent {}
+class MonthSelected extends CalendarEvent {
+  final int year;
+  final int month;
 
-class YearSelected extends CalendarEvent {
-  final int yearNumber;
-
-  YearSelected({
-    required this.yearNumber,
+  MonthSelected({
+    required this.year,
+    required this.month,
   });
 }
 
 class DaySelected extends CalendarEvent {
-  final int yearNumber;
-  final int monthNumber;
-  final int dayNumber;
+  final int year;
+  final int month;
+  final int day;
 
   DaySelected({
-    required this.yearNumber,
-    required this.monthNumber,
-    required this.dayNumber,
+    required this.year,
+    required this.month,
+    required this.day,
   });
+}
+
+class GetWeeksOfSelectedMonth extends CalendarEvent {
+  const GetWeeksOfSelectedMonth();
+}
+
+class GetSelectedWeek extends CalendarEvent {
+  const GetSelectedWeek();
+}
+
+class SelectPrevMonth extends CalendarEvent {
+  const SelectPrevMonth();
+}
+
+class SelectNextMonth extends CalendarEvent {
+  const SelectNextMonth();
+}
+
+class SelectPrevWeek extends CalendarEvent {
+  const SelectPrevWeek();
+}
+
+class SelectNextWeek extends CalendarEvent {
+  const SelectNextWeek();
 }

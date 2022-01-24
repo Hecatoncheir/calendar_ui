@@ -11,10 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dateTime = DateTime.now();
-    final calendarBloc = CalendarBloc.forMonth(
-      year: dateTime.year,
-      month: dateTime.month,
-    );
+    final calendarBloc = CalendarBloc(dateTime);
 
     return MaterialApp(
       home: Scaffold(
@@ -23,12 +20,18 @@ class MyApp extends StatelessWidget {
             Row(
               children: [
                 GestureDetector(
-                  onTap: () => calendarBloc.selectPrevMonth(),
+                  onTap: () {
+                    const event = SelectPrevMonth();
+                    calendarBloc.getController().add(event);
+                  },
                   child: const Text("prev month"),
                 ),
                 const SizedBox(width: 12),
                 GestureDetector(
-                  onTap: () => calendarBloc.selectNextMonth(),
+                  onTap: () {
+                    const event = SelectNextMonth();
+                    calendarBloc.getController().add(event);
+                  },
                   child: const Text("next month"),
                 ),
               ],
@@ -68,7 +71,7 @@ class MyApp extends StatelessWidget {
                           ),
                         );
                       },
-                      headerDayOfTheWeekBuilder: (weekDayNumber) {
+                      headerDayOfWeekBuilder: (weekDayNumber) {
                         String name = "";
                         if (weekDayNumber == DateTime.monday) name = "Пн";
                         if (weekDayNumber == DateTime.tuesday) name = "Вт";
