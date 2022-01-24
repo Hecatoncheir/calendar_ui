@@ -95,7 +95,7 @@ class CalendarBloc implements CalendarBlocInterface {
   Stream<CalendarState> getStateStream() => _stateStream;
 
   @override
-  Map<int, Map<int, Day?>> getFullWeeksOfSelectedMonth() {
+  List<WeekInterface> getFullWeeksOfSelectedMonth() {
     final state = FullWeeksOfSelectedMonth(
       month: _calendar.getSelectedMonth(),
       monthFullWeeks: _calendar.getFullWeeksOfSelectedMonth(),
@@ -107,16 +107,16 @@ class CalendarBloc implements CalendarBlocInterface {
   }
 
   @override
-  Month getSelectedMonth() => _calendar.getSelectedMonth();
+  MonthInterface getSelectedMonth() => _calendar.getSelectedMonth();
 
   @override
-  Year getSelectedYear() => _calendar.getSelectedYear();
+  YearInterface getSelectedYear() => _calendar.getSelectedYear();
 
   @override
-  Day? getSelectedDay() => _calendar.getSelectedDay();
+  DayInterface? getSelectedDay() => _calendar.getSelectedDay();
 
   @override
-  Month? selectMonth(int month) {
+  MonthInterface? selectMonth(int month) {
     _calendar.selectMonth(month);
 
     final state = MonthSelect(
@@ -130,7 +130,7 @@ class CalendarBloc implements CalendarBlocInterface {
   }
 
   @override
-  Month selectPrevMonth() {
+  MonthInterface selectPrevMonth() {
     _calendar.selectPrevMonth();
 
     final state = MonthSelect(
@@ -144,7 +144,7 @@ class CalendarBloc implements CalendarBlocInterface {
   }
 
   @override
-  Month selectNextMonth() {
+  MonthInterface selectNextMonth() {
     _calendar.selectNextMonth();
 
     final state = MonthSelect(
@@ -158,7 +158,7 @@ class CalendarBloc implements CalendarBlocInterface {
   }
 
   @override
-  Year? selectYear(int year) {
+  YearInterface? selectYear(int year) {
     _calendar.selectYear(year);
 
     final state = YearSelect(
@@ -173,7 +173,7 @@ class CalendarBloc implements CalendarBlocInterface {
   }
 
   @override
-  Year selectPrevYear() {
+  YearInterface selectPrevYear() {
     _calendar.selectPrevYear();
 
     final state = YearSelect(
@@ -188,7 +188,7 @@ class CalendarBloc implements CalendarBlocInterface {
   }
 
   @override
-  Year selectNextYear() {
+  YearInterface selectNextYear() {
     _calendar.selectNextYear();
 
     final state = YearSelect(
@@ -203,7 +203,7 @@ class CalendarBloc implements CalendarBlocInterface {
   }
 
   @override
-  Day? selectDay(int year, int month, int day) {
+  DayInterface? selectDay(int year, int month, int day) {
     if (year != _calendar.getSelectedYear().getYearNumber()) {
       selectYear(year);
     }

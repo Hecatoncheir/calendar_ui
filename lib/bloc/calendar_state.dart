@@ -4,8 +4,8 @@ part of 'calendar_bloc.dart';
 abstract class CalendarState {}
 
 class MonthSelect extends CalendarState {
-  final Month month;
-  final Map<int, Map<int, Day?>> monthFullWeeks;
+  final MonthInterface month;
+  final List<WeekInterface> monthFullWeeks;
 
   MonthSelect({
     required this.month,
@@ -14,8 +14,8 @@ class MonthSelect extends CalendarState {
 }
 
 class FullWeeksOfSelectedMonth extends CalendarState {
-  final Month month;
-  final Map<int, Map<int, Day?>> monthFullWeeks;
+  final MonthInterface month;
+  final List<WeekInterface> monthFullWeeks;
 
   FullWeeksOfSelectedMonth({
     required this.month,
@@ -24,9 +24,9 @@ class FullWeeksOfSelectedMonth extends CalendarState {
 }
 
 class YearSelect extends CalendarState {
-  final Year year;
-  final Month month;
-  final Map<int, Map<int, Day?>> monthFullWeeks;
+  final YearInterface year;
+  final MonthInterface month;
+  final List<WeekInterface> monthFullWeeks;
 
   YearSelect({
     required this.year,
@@ -36,9 +36,9 @@ class YearSelect extends CalendarState {
 }
 
 class DaySelect extends CalendarState {
-  final Year year;
-  final Month month;
-  final Day day;
+  final YearInterface year;
+  final MonthInterface month;
+  final DayInterface day;
 
   DaySelect({
     required this.year,

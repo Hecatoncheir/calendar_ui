@@ -6,18 +6,18 @@ abstract class CalendarBlocInterface {
 
   void dispose();
 
-  Month getSelectedMonth();
-  Month? selectMonth(int month);
-  Month selectPrevMonth();
-  Month selectNextMonth();
+  MonthInterface getSelectedMonth();
+  MonthInterface? selectMonth(int month);
+  MonthInterface selectPrevMonth();
+  MonthInterface selectNextMonth();
 
-  Year getSelectedYear();
-  Year? selectYear(int year);
-  Year selectPrevYear();
-  Year selectNextYear();
+  YearInterface getSelectedYear();
+  YearInterface? selectYear(int year);
+  YearInterface selectPrevYear();
+  YearInterface selectNextYear();
 
-  Day? getSelectedDay();
-  Day? selectDay(int year, int month, int day);
+  DayInterface? getSelectedDay();
+  DayInterface? selectDay(int year, int month, int day);
 
-  Map<int, Map<int, Day?>> getFullWeeksOfSelectedMonth();
+  List<WeekInterface> getFullWeeksOfSelectedMonth();
 }
