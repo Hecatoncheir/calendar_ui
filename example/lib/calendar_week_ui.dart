@@ -54,6 +54,27 @@ class _MyAppState extends State<MyApp> {
                 ),
               ],
             ),
+            StreamBuilder<Object>(
+                stream: calendarBloc.getStream().where(
+                    (state) => state is WeekSelect || state is SelectedWeek),
+                builder: (context, snapshot) {
+                  final state = snapshot.data;
+                  if (state == null) return Container();
+
+                  if (state is WeekSelect) {
+                    return Text(
+                      "${state.year.getYearNumber()} - ${state.month.getMonthNumber()} - ${state.week.getWeekNumberInMonth()}",
+                    );
+                  }
+
+                  if (state is SelectedWeek) {
+                    return Text(
+                      "${state.year.getYearNumber()} - ${state.month.getMonthNumber()} - ${state.week.getWeekNumberInMonth()}",
+                    );
+                  }
+
+                  return Container();
+                }),
             Expanded(
               child: Row(
                 children: [

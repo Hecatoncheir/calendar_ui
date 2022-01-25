@@ -82,8 +82,6 @@ class _CalendarWeekUIState extends State<CalendarWeekUI> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                  "${state.year.getYearNumber()} - ${state.month.getMonthNumber()} - ${state.week.getWeekNumberInMonth()}"),
               DaysOfWeekHeader(
                 headerDayOfWeekBuilder: widget.headerDayOfWeekBuilder,
               ),
@@ -103,8 +101,6 @@ class _CalendarWeekUIState extends State<CalendarWeekUI> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                  "${state.year.getYearNumber()} - ${state.month.getMonthNumber()} - ${state.week.getWeekNumberInMonth()}"),
               DaysOfWeekHeader(
                 headerDayOfWeekBuilder: widget.headerDayOfWeekBuilder,
               ),
