@@ -187,6 +187,11 @@ class CalendarBloc implements CalendarBlocInterface {
   }
 
   Future<void> _selectPrevWeekEventHandler(SelectPrevWeek _) async {
+    if (_calendar.getSelectedMonth().getWeeks().first ==
+        _calendar.getSelectedWeek()) {
+      _calendar.selectPrevWeek();
+    }
+
     _calendar.selectPrevWeek();
 
     final state = WeekSelect(
@@ -200,6 +205,11 @@ class CalendarBloc implements CalendarBlocInterface {
   }
 
   Future<void> _selectNextWeekEventHandler(SelectNextWeek _) async {
+    if (_calendar.getSelectedMonth().getWeeks().last ==
+        _calendar.getSelectedWeek()) {
+      _calendar.selectNextWeek();
+    }
+
     _calendar.selectNextWeek();
 
     final state = WeekSelect(
