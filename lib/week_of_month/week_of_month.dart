@@ -7,6 +7,7 @@ import 'package:calendar_ui/day_of_month/day_of_month.dart';
 class WeekOfMonth extends StatelessWidget {
   final MonthInterface month;
   final WeekInterface week;
+  final DayInterface? selectedDay;
 
   final CellBuilder? cellBuilder;
   final DayBuilder? dayBuilder;
@@ -14,6 +15,7 @@ class WeekOfMonth extends StatelessWidget {
   const WeekOfMonth({
     required this.month,
     required this.week,
+    required this.selectedDay,
     this.cellBuilder,
     this.dayBuilder,
     Key? key,
@@ -37,6 +39,7 @@ class WeekOfMonth extends StatelessWidget {
                     month: month,
                     day: week.getDayOfWeek(dayNumberOfWeek)!,
                     dayBuilder: dayBuilder,
+                    selectedDay: selectedDay,
                   )
                 : cellBuilder!(
                     context,
@@ -44,6 +47,7 @@ class WeekOfMonth extends StatelessWidget {
                       month: month,
                       day: week.getDayOfWeek(dayNumberOfWeek)!,
                       dayBuilder: dayBuilder,
+                      selectedDay: selectedDay,
                     ),
                     month,
                     week.getWeekNumberInMonth(),

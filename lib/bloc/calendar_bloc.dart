@@ -73,6 +73,7 @@ class CalendarBloc implements CalendarBlocInterface {
       year: _calendar.getSelectedYear(),
       month: _calendar.getSelectedMonth(),
       monthFullWeeks: _calendar.getFullWeeksOfSelectedMonth(),
+      selectedDay: _calendar.getSelectedDay(),
     );
 
     _stateController.add(state);
@@ -89,6 +90,7 @@ class CalendarBloc implements CalendarBlocInterface {
       year: _calendar.getSelectedYear(),
       month: _calendar.getSelectedMonth(),
       monthFullWeeks: _calendar.getFullWeeksOfSelectedMonth(),
+      selectedDay: _calendar.getSelectedDay(),
     );
 
     _stateController.add(state);
@@ -108,6 +110,7 @@ class CalendarBloc implements CalendarBlocInterface {
         year: _calendar.getSelectedYear(),
         month: _calendar.getSelectedMonth(),
         monthFullWeeks: _calendar.getFullWeeksOfSelectedMonth(),
+        selectedDay: _calendar.getSelectedDay(),
       );
 
       _stateController.add(state);
@@ -120,6 +123,7 @@ class CalendarBloc implements CalendarBlocInterface {
         year: _calendar.getSelectedYear(),
         month: _calendar.getSelectedMonth(),
         monthFullWeeks: _calendar.getFullWeeksOfSelectedMonth(),
+        selectedDay: _calendar.getSelectedDay(),
       );
 
       _stateController.add(state);
@@ -145,6 +149,7 @@ class CalendarBloc implements CalendarBlocInterface {
       year: _calendar.getSelectedYear(),
       month: _calendar.getSelectedMonth(),
       monthFullWeeks: _calendar.getFullWeeksOfSelectedMonth(),
+      selectedDay: _calendar.getSelectedDay(),
     );
 
     _stateController.add(state);
@@ -157,6 +162,7 @@ class CalendarBloc implements CalendarBlocInterface {
       year: _calendar.getSelectedYear(),
       month: _calendar.getSelectedMonth(),
       week: _calendar.getSelectedWeek(),
+      selectedDay: _calendar.getSelectedDay(),
     );
 
     _stateController.add(state);
@@ -169,6 +175,7 @@ class CalendarBloc implements CalendarBlocInterface {
       year: _calendar.getSelectedYear(),
       month: _calendar.getSelectedMonth(),
       monthFullWeeks: _calendar.getFullWeeksOfSelectedMonth(),
+      selectedDay: _calendar.getSelectedDay(),
     );
 
     _stateController.add(state);
@@ -181,6 +188,7 @@ class CalendarBloc implements CalendarBlocInterface {
       year: _calendar.getSelectedYear(),
       month: _calendar.getSelectedMonth(),
       monthFullWeeks: _calendar.getFullWeeksOfSelectedMonth(),
+      selectedDay: _calendar.getSelectedDay(),
     );
 
     _stateController.add(state);
@@ -199,6 +207,7 @@ class CalendarBloc implements CalendarBlocInterface {
       month: _calendar.getSelectedMonth(),
       monthFullWeeks: _calendar.getFullWeeksOfSelectedMonth(),
       week: _calendar.getSelectedWeek(),
+      selectedDay: _calendar.getSelectedDay(),
     );
 
     _stateController.add(state);
@@ -217,6 +226,7 @@ class CalendarBloc implements CalendarBlocInterface {
       month: _calendar.getSelectedMonth(),
       monthFullWeeks: _calendar.getFullWeeksOfSelectedMonth(),
       week: _calendar.getSelectedWeek(),
+      selectedDay: _calendar.getSelectedDay(),
     );
 
     _stateController.add(state);

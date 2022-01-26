@@ -54,6 +54,7 @@ class _CalendarMonthUIState extends State<CalendarMonthUI> {
           return buildMonth(
             month: state.month,
             fullWeeksOfMonth: state.monthFullWeeks,
+            selectedDay: state.selectedDay,
           );
         }
 
@@ -61,6 +62,7 @@ class _CalendarMonthUIState extends State<CalendarMonthUI> {
           return buildMonth(
             month: state.month,
             fullWeeksOfMonth: state.monthFullWeeks,
+            selectedDay: state.selectedDay,
           );
         }
 
@@ -72,6 +74,7 @@ class _CalendarMonthUIState extends State<CalendarMonthUI> {
   Widget buildMonth({
     required utils.MonthInterface month,
     required List<utils.WeekInterface> fullWeeksOfMonth,
+    required utils.DayInterface? selectedDay,
   }) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -94,6 +97,7 @@ class _CalendarMonthUIState extends State<CalendarMonthUI> {
               week: week,
               cellBuilder: widget.cellBuilder,
               dayBuilder: widget.dayBuilder,
+              selectedDay: selectedDay,
             ),
           ),
       ],

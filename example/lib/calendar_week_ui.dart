@@ -100,7 +100,7 @@ class _MyAppState extends State<MyApp> {
                           ),
                         );
                       },
-                      dayBuilder: (selectedMonth, day) {
+                      dayBuilder: (selectedMonth, day, selectedDay) {
                         final isDayOfTheSelectedMonth =
                             day.getMonth() == selectedMonth.getMonthNumber() &&
                                 day.getYear() == selectedMonth.getYear();

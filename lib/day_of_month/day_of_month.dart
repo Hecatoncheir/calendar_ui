@@ -6,12 +6,14 @@ import 'package:calendar_ui/builders/builders.dart';
 class DayOfMonth extends StatelessWidget {
   final MonthInterface month;
   final DayInterface day;
+  final DayInterface? selectedDay;
 
   final DayBuilder? dayBuilder;
 
   const DayOfMonth({
     required this.month,
     required this.day,
+    required this.selectedDay,
     this.dayBuilder,
     Key? key,
   }) : super(key: key);
@@ -28,7 +30,7 @@ class DayOfMonth extends StatelessWidget {
       ),
       child: dayBuilder == null
           ? Text(day.getDay().toString())
-          : dayBuilder!(month, day),
+          : dayBuilder!(month, day, selectedDay),
     );
   }
 }

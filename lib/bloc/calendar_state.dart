@@ -7,11 +7,13 @@ class YearSelect extends CalendarState {
   final YearInterface year;
   final MonthInterface month;
   final List<WeekInterface> monthFullWeeks;
+  final DayInterface? selectedDay;
 
   YearSelect({
     required this.year,
     required this.month,
     required this.monthFullWeeks,
+    required this.selectedDay,
   });
 }
 
@@ -19,11 +21,13 @@ class MonthSelect extends CalendarState {
   final YearInterface year;
   final MonthInterface month;
   final List<WeekInterface> monthFullWeeks;
+  final DayInterface? selectedDay;
 
   MonthSelect({
     required this.year,
     required this.month,
     required this.monthFullWeeks,
+    required this.selectedDay,
   });
 }
 
@@ -32,12 +36,14 @@ class WeekSelect extends CalendarState {
   final MonthInterface month;
   final List<WeekInterface> monthFullWeeks;
   final WeekInterface week;
+  final DayInterface? selectedDay;
 
   WeekSelect({
     required this.year,
     required this.month,
     required this.monthFullWeeks,
     required this.week,
+    required this.selectedDay,
   });
 }
 
@@ -59,11 +65,13 @@ class WeeksOfSelectedMonth extends CalendarState {
   final YearInterface year;
   final MonthInterface month;
   final List<WeekInterface> monthFullWeeks;
+  final DayInterface? selectedDay;
 
   WeeksOfSelectedMonth({
     required this.year,
     required this.month,
     required this.monthFullWeeks,
+    required this.selectedDay,
   });
 }
 
@@ -71,10 +79,12 @@ class SelectedWeek extends CalendarState {
   final YearInterface year;
   final MonthInterface month;
   final WeekInterface week;
+  final DayInterface? selectedDay;
 
   SelectedWeek({
     required this.year,
     required this.month,
     required this.week,
+    required this.selectedDay,
   });
 }

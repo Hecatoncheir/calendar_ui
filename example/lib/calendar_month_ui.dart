@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
                           child: child,
                         );
                       },
-                      dayBuilder: (selectedMonth, day) {
+                      dayBuilder: (selectedMonth, day, selectedDay) {
                         final isDayOfTheSelectedMonth =
                             day.getMonth() == selectedMonth.getMonthNumber() &&
                                 day.getYear() == selectedMonth.getYear();
