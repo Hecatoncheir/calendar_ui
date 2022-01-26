@@ -9,11 +9,13 @@ class WeekOfMonth extends StatelessWidget {
   final WeekInterface week;
 
   final CellBuilder? cellBuilder;
+  final DayBuilder? dayBuilder;
 
   const WeekOfMonth({
     required this.month,
     required this.week,
     this.cellBuilder,
+    this.dayBuilder,
     Key? key,
   }) : super(key: key);
 
@@ -34,12 +36,14 @@ class WeekOfMonth extends StatelessWidget {
                 ? DayOfMonth(
                     month: month,
                     day: week.getDayOfWeek(dayNumberOfWeek)!,
+                    dayBuilder: dayBuilder,
                   )
                 : cellBuilder!(
                     context,
                     DayOfMonth(
                       month: month,
                       day: week.getDayOfWeek(dayNumberOfWeek)!,
+                      dayBuilder: dayBuilder,
                     ),
                     month,
                     week.getWeekNumberInMonth(),

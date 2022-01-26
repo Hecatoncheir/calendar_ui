@@ -93,7 +93,11 @@ class _MyAppState extends State<MyApp> {
                                 : Colors.transparent,
                             border: Border.all(color: Colors.black),
                           ),
-                          child: child,
+                          child: Column(
+                            children: [
+                              child,
+                            ],
+                          ),
                         );
                       },
                       dayBuilder: (selectedMonth, day) {

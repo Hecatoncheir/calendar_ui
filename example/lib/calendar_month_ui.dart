@@ -62,13 +62,25 @@ class MyApp extends StatelessWidget {
                             day.getMonth() == selectedMonth.getMonthNumber() &&
                                 day.getYear() == selectedMonth.getYear();
 
-                        return Text(
-                          day.getDay().toString(),
-                          style: TextStyle(
-                            color: isDayOfTheSelectedMonth
-                                ? Colors.green
-                                : Colors.red,
-                          ),
+                        return Column(
+                          children: [
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      day.getDay().toString(),
+                                      style: TextStyle(
+                                        color: isDayOfTheSelectedMonth
+                                            ? Colors.green
+                                            : Colors.red,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         );
                       },
                       headerDayOfWeekBuilder: (weekDayNumber) {

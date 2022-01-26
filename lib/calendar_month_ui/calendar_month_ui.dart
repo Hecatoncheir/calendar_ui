@@ -93,6 +93,7 @@ class _CalendarMonthUIState extends State<CalendarMonthUI> {
               month: month,
               week: week,
               cellBuilder: widget.cellBuilder,
+              dayBuilder: widget.dayBuilder,
             ),
           ),
       ],

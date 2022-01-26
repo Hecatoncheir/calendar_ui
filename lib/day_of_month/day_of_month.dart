@@ -18,31 +18,17 @@ class DayOfMonth extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                key: Key(
-                  day.getYear().toString() +
-                      "-" +
-                      day.getMonth().toString() +
-                      "-" +
-                      day.getDay().toString(),
-                ),
-                child: dayBuilder == null
-                    ? Text(day.getDay().toString())
-                    : dayBuilder!(month, day),
-              ),
-            ],
-          ),
-        ),
-      ],
+    return Container(
+      key: Key(
+        day.getYear().toString() +
+            "-" +
+            day.getMonth().toString() +
+            "-" +
+            day.getDay().toString(),
+      ),
+      child: dayBuilder == null
+          ? Text(day.getDay().toString())
+          : dayBuilder!(month, day),
     );
   }
 }
