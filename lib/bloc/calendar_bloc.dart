@@ -129,6 +129,8 @@ class CalendarBloc implements CalendarBlocInterface {
       _stateController.add(state);
     }
 
+    _calendar.selectDay(year, month, day);
+
     final selectedDay = _calendar.getSelectedMonth().getDay(day);
     if (selectedDay == null) return null;
 
