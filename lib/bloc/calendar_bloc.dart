@@ -33,6 +33,7 @@ class CalendarBloc implements CalendarBlocInterface {
       if (event is YearSelected) _yearSelectedEventHandler(event);
       if (event is MonthSelected) _monthSelectedEventHandler(event);
       if (event is DaySelected) _daySelectedEventHandler(event);
+      if (event is WeekSelected) _weekSelectedEventHandler(event);
 
       if (event is GetWeeksOfSelectedMonth) {
         _getWeeksOfSelectedMonthEventHandler(event);
@@ -222,6 +223,20 @@ class CalendarBloc implements CalendarBlocInterface {
     }
 
     _calendar.selectNextWeek();
+
+    final state = WeekSelect(
+      year: _calendar.getSelectedYear(),
+      month: _calendar.getSelectedMonth(),
+      monthFullWeeks: _calendar.getFullWeeksOfSelectedMonth(),
+      week: _calendar.getSelectedWeek(),
+      selectedDay: _calendar.getSelectedDay(),
+    );
+
+    _stateController.add(state);
+  }
+
+  Future<void> _weekSelectedEventHandler(WeekSelected event) async {
+    _calendar.selectMonthWeek(event.weekNumber);
 
     final state = WeekSelect(
       year: _calendar.getSelectedYear(),

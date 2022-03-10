@@ -35,6 +35,18 @@ class DaySelected extends CalendarEvent {
   });
 }
 
+class WeekSelected extends CalendarEvent {
+  final int year;
+  final int month;
+  final int weekNumber;
+
+  WeekSelected({
+    required this.year,
+    required this.month,
+    required this.weekNumber,
+  });
+}
+
 class GetWeeksOfSelectedMonth extends CalendarEvent {
   const GetWeeksOfSelectedMonth();
 }
