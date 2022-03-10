@@ -3,9 +3,11 @@ import 'package:calendar_ui/builders/header_day_of_week_builder.dart';
 
 class DaysOfWeekHeader extends StatelessWidget {
   final HeaderDayOfWeekBuilder? headerDayOfWeekBuilder;
+  final bool isWeekNumberMustBeCreated;
 
   const DaysOfWeekHeader({
     this.headerDayOfWeekBuilder,
+    this.isWeekNumberMustBeCreated = false,
     Key? key,
   }) : super(key: key);
 
@@ -15,6 +17,7 @@ class DaysOfWeekHeader extends StatelessWidget {
 
     return Row(
       children: [
+        if (isWeekNumberMustBeCreated) Spacer(),
         for (int dayNumber = 1; dayNumber <= daysInWeek; dayNumber++)
           Expanded(
             child: headerDayOfWeekBuilder == null

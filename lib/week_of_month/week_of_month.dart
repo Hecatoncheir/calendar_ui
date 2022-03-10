@@ -12,12 +12,17 @@ class WeekOfMonth extends StatelessWidget {
   final CellBuilder? cellBuilder;
   final DayBuilder? dayBuilder;
 
+  final bool isWeekNumberMustBeCreated;
+  final WeekNumberBuilder? weekNumberBuilder;
+
   const WeekOfMonth({
     required this.month,
     required this.week,
     required this.selectedDay,
     this.cellBuilder,
     this.dayBuilder,
+    this.isWeekNumberMustBeCreated = false,
+    this.weekNumberBuilder,
     Key? key,
   }) : super(key: key);
 
@@ -25,6 +30,12 @@ class WeekOfMonth extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
+        if (isWeekNumberMustBeCreated)
+          Expanded(
+            child: weekNumberBuilder == null
+                ? Text(week.getWeekNumberInMonth().toString())
+                : weekNumberBuilder!(week, selectedDay),
+          ),
         for (final dayNumberOfWeek in week.getDaysOfWeek().keys)
           Expanded(
             key: Key(

@@ -42,6 +42,33 @@ class MyApp extends StatelessWidget {
                   Expanded(
                     child: CalendarMonthUI(
                       calendarBloc: calendarBloc,
+                      isWeekNumberMustBeCreated: true,
+                      weekNumberBuilder: (week, selectedDay) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black),
+                          ),
+                          child: Column(
+                            children: [
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: Center(
+                                        child: Text(
+                                          week
+                                              .getWeekNumberInMonth()
+                                              .toString(),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
                       cellBuilder: (context, child, month, weekNumber, day) {
                         final isDayIsWeekend =
                             day.getWeekday() == DateTime.saturday ||

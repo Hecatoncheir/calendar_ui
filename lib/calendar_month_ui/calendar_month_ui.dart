@@ -14,9 +14,12 @@ class CalendarMonthUI extends StatefulWidget {
   final CellBuilder? cellBuilder;
   final DayBuilder? dayBuilder;
   final HeaderDayOfWeekBuilder? headerDayOfWeekBuilder;
+  final WeekNumberBuilder? weekNumberBuilder;
 
   final bool isMonthNameMustBeCreated;
   final MonthNameBuilder? monthNameBuilder;
+
+  final bool isWeekNumberMustBeCreated;
 
   const CalendarMonthUI({
     required this.calendarBloc,
@@ -24,7 +27,9 @@ class CalendarMonthUI extends StatefulWidget {
     this.dayBuilder,
     this.headerDayOfWeekBuilder,
     this.monthNameBuilder,
+    this.weekNumberBuilder,
     this.isMonthNameMustBeCreated = false,
+    this.isWeekNumberMustBeCreated = false,
     Key? key,
   }) : super(key: key);
 
@@ -88,11 +93,14 @@ class _CalendarMonthUIState extends State<CalendarMonthUI> {
                 ? Container()
                 : widget.monthNameBuilder!(month),
         DaysOfWeekHeader(
+          isWeekNumberMustBeCreated: widget.isWeekNumberMustBeCreated,
           headerDayOfWeekBuilder: widget.headerDayOfWeekBuilder,
         ),
         for (final week in fullWeeksOfMonth)
           Expanded(
             child: WeekOfMonth(
+              isWeekNumberMustBeCreated: widget.isWeekNumberMustBeCreated,
+              weekNumberBuilder: widget.weekNumberBuilder,
               month: month,
               week: week,
               cellBuilder: widget.cellBuilder,
