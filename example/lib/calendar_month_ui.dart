@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
                     child: CalendarMonthUI(
                       calendarBloc: calendarBloc,
                       isWeekNumberMustBeCreated: true,
-                      weekNumberBuilder: (week, selectedDay) {
+                      weekNumberBuilder: (month, week, selectedDay) {
                         return Container(
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.black),

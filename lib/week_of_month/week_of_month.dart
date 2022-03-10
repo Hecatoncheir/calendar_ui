@@ -34,7 +34,7 @@ class WeekOfMonth extends StatelessWidget {
           Expanded(
             child: weekNumberBuilder == null
                 ? Text(week.getWeekNumberInMonth().toString())
-                : weekNumberBuilder!(week, selectedDay),
+                : weekNumberBuilder!(month, week, selectedDay),
           ),
         for (final dayNumberOfWeek in week.getDaysOfWeek().keys)
           Expanded(
