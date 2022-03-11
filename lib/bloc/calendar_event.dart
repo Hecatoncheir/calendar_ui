@@ -36,15 +36,8 @@ class DaySelected extends CalendarEvent {
 }
 
 class WeekSelected extends CalendarEvent {
-  final int year;
-  final int month;
-  final int weekNumber;
-
-  WeekSelected({
-    required this.year,
-    required this.month,
-    required this.weekNumber,
-  });
+  final WeekInterface week;
+  WeekSelected({required this.week});
 }
 
 class GetWeeksOfSelectedMonth extends CalendarEvent {
