@@ -8,7 +8,7 @@ abstract class CalendarEvent {
 class YearSelected extends CalendarEvent {
   final int year;
 
-  YearSelected({
+  const YearSelected({
     required this.year,
   });
 }
@@ -17,9 +17,21 @@ class MonthSelected extends CalendarEvent {
   final int year;
   final int month;
 
-  MonthSelected({
+  const MonthSelected({
     required this.year,
     required this.month,
+  });
+}
+
+class WeekSelected extends CalendarEvent {
+  final int year;
+  final int month;
+  final int weekNumber;
+
+  const WeekSelected({
+    required this.year,
+    required this.month,
+    required this.weekNumber,
   });
 }
 
@@ -28,16 +40,11 @@ class DaySelected extends CalendarEvent {
   final int month;
   final int day;
 
-  DaySelected({
+  const DaySelected({
     required this.year,
     required this.month,
     required this.day,
   });
-}
-
-class WeekSelected extends CalendarEvent {
-  final WeekInterface week;
-  WeekSelected({required this.week});
 }
 
 class GetWeeksOfSelectedMonth extends CalendarEvent {

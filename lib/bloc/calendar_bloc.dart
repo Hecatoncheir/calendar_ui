@@ -236,7 +236,7 @@ class CalendarBloc implements CalendarBlocInterface {
   }
 
   Future<void> _weekSelectedEventHandler(WeekSelected event) async {
-    _calendar.selectMonthWeek(event.week.getWeekNumberInMonth());
+    _calendar.selectMonthWeek(event.weekNumber);
 
     final state = WeekSelect(
       year: _calendar.getSelectedYear(),
