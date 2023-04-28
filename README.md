@@ -1,6 +1,6 @@
 # calendar_ui
 
-A new Flutter project.
+![Preview gif](/preview.gif)
 
 ## Getting Started
 
