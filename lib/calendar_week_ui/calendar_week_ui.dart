@@ -1,15 +1,19 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 import 'package:calendar_ui/builders/builders.dart';
-import 'package:calendar_ui/bloc/calendar_bloc.dart';
+import 'package:calendar_ui/controller/calendar_controller.dart';
 
 import 'package:calendar_ui/week_of_month/week_of_month.dart';
 import 'package:calendar_ui/days_of_week_header/days_of_week_header.dart';
+import 'package:calendar_ui/week_days/week_days.dart';
 
-class CalendarWeekUI extends StatefulWidget {
-  final CalendarBlocInterface calendarBloc;
+/// Неделя [controller] — строкой дней.
+///
+/// Прежде неделя при появлении спрашивала себя событием, подписывалась на
+/// выбор дня, месяца и года, чтобы спросить себя снова, и строилась из
+/// ответа в потоке двумя одинаковыми ветками.
+class CalendarWeekUI extends StatelessWidget {
+  final CalendarController controller;
 
   final CellBuilder? cellBuilder;
   final DayBuilder? dayBuilder;
@@ -18,109 +22,44 @@ class CalendarWeekUI extends StatefulWidget {
   final bool isMonthNameMustBeCreated;
   final MonthNameBuilder? monthNameBuilder;
 
+  /// Дни недели, которые показывать: [allWeekDays] или [workWeekDays].
+  final List<int> weekDays;
+
   const CalendarWeekUI({
-    required this.calendarBloc,
+    required this.controller,
     this.cellBuilder,
     this.dayBuilder,
     this.headerDayOfWeekBuilder,
     this.monthNameBuilder,
     this.isMonthNameMustBeCreated = false,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  State<CalendarWeekUI> createState() => _CalendarWeekUIState();
-}
-
-class _CalendarWeekUIState extends State<CalendarWeekUI> {
-  late final StreamSubscription<CalendarState> _calendarBlocStreamSubscription;
-
-  @override
-  void initState() {
-    super.initState();
-
-    final event = const GetSelectedWeek();
-    widget.calendarBloc.getController().add(event);
-
-    _calendarBlocStreamSubscription =
-        widget.calendarBloc.getStream().listen((state) {
-      if (state is DaySelect) {
-        final event = const GetSelectedWeek();
-        widget.calendarBloc.getController().add(event);
-      }
-
-      if (state is MonthSelect) {
-        final event = const GetSelectedWeek();
-        widget.calendarBloc.getController().add(event);
-      }
-
-      if (state is YearSelect) {
-        final event = const GetSelectedWeek();
-        widget.calendarBloc.getController().add(event);
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _calendarBlocStreamSubscription.cancel();
-    super.dispose();
-  }
+    this.weekDays = allWeekDays,
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<CalendarState>(
-      stream: widget.calendarBloc.getStream().where(
-            (state) => state is WeekSelect || state is SelectedWeek,
+    return ValueListenableBuilder(
+      valueListenable: controller,
+      builder: (context, selection, _) => Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          DaysOfWeekHeader(
+            headerDayOfWeekBuilder: headerDayOfWeekBuilder,
+            weekDays: weekDays,
           ),
-      builder: (context, snapshot) {
-        final state = snapshot.data;
-        if (state == null) return Container();
-
-        if (state is WeekSelect) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              DaysOfWeekHeader(
-                headerDayOfWeekBuilder: widget.headerDayOfWeekBuilder,
-              ),
-              Expanded(
-                child: WeekOfMonth(
-                  month: state.month,
-                  week: state.week,
-                  cellBuilder: widget.cellBuilder,
-                  dayBuilder: widget.dayBuilder,
-                  selectedDay: state.selectedDay,
-                ),
-              ),
-            ],
-          );
-        }
-
-        if (state is SelectedWeek) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              DaysOfWeekHeader(
-                headerDayOfWeekBuilder: widget.headerDayOfWeekBuilder,
-              ),
-              Expanded(
-                child: WeekOfMonth(
-                  month: state.month,
-                  week: state.week,
-                  cellBuilder: widget.cellBuilder,
-                  dayBuilder: widget.dayBuilder,
-                  selectedDay: state.selectedDay,
-                ),
-              ),
-            ],
-          );
-        }
-
-        return Container();
-      },
+          Expanded(
+            child: WeekOfMonth(
+              month: selection.shownMonth,
+              week: selection.week,
+              cellBuilder: cellBuilder,
+              dayBuilder: dayBuilder,
+              selectedDay: selection.day,
+              weekDays: weekDays,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

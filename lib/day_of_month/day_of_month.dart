@@ -4,9 +4,9 @@ import 'package:calendar/calendar.dart';
 import 'package:calendar_ui/builders/builders.dart';
 
 class DayOfMonth extends StatelessWidget {
-  final MonthInterface month;
-  final DayInterface day;
-  final DayInterface? selectedDay;
+  final Month month;
+  final Day day;
+  final Day? selectedDay;
 
   final DayBuilder? dayBuilder;
 
@@ -15,21 +15,15 @@ class DayOfMonth extends StatelessWidget {
     required this.day,
     required this.selectedDay,
     this.dayBuilder,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      key: Key(
-        day.getYear().toString() +
-            "-" +
-            day.getMonth().toString() +
-            "-" +
-            day.getDay().toString(),
-      ),
+      key: Key("${day.year}-${day.month}-${day.day}"),
       child: dayBuilder == null
-          ? Text(day.getDay().toString())
+          ? Text(day.day.toString())
           : dayBuilder!(month, day, selectedDay),
     );
   }

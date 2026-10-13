@@ -5,14 +5,24 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final controller = CalendarController(DateTime.now());
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final dateTime = DateTime.now();
-    final calendarBloc = CalendarBloc(dateTime);
-
     return MaterialApp(
       home: Scaffold(
         body: Column(
@@ -20,18 +30,12 @@ class MyApp extends StatelessWidget {
             Row(
               children: [
                 GestureDetector(
-                  onTap: () {
-                    const event = SelectPrevMonth();
-                    calendarBloc.getController().add(event);
-                  },
+                  onTap: controller.prevMonth,
                   child: const Text("prev month"),
                 ),
                 const SizedBox(width: 12),
                 GestureDetector(
-                  onTap: () {
-                    const event = SelectNextMonth();
-                    calendarBloc.getController().add(event);
-                  },
+                  onTap: controller.nextMonth,
                   child: const Text("next month"),
                 ),
               ],
@@ -41,7 +45,7 @@ class MyApp extends StatelessWidget {
                 children: [
                   Expanded(
                     child: CalendarMonthUI(
-                      calendarBloc: calendarBloc,
+                      controller: controller,
                       isWeekNumberMustBeCreated: true,
                       weekNumberBuilder: (month, week, selectedDay) {
                         return Container(
@@ -55,11 +59,7 @@ class MyApp extends StatelessWidget {
                                   children: [
                                     Expanded(
                                       child: Center(
-                                        child: Text(
-                                          week
-                                              .getWeekNumberInMonth()
-                                              .toString(),
-                                        ),
+                                        child: Text(week.number.toString()),
                                       ),
                                     ),
                                   ],
@@ -71,8 +71,8 @@ class MyApp extends StatelessWidget {
                       },
                       cellBuilder: (context, child, month, weekNumber, day) {
                         final isDayIsWeekend =
-                            day.getWeekday() == DateTime.saturday ||
-                                day.getWeekday() == DateTime.sunday;
+                            day.weekday == DateTime.saturday ||
+                            day.weekday == DateTime.sunday;
 
                         return Container(
                           decoration: BoxDecoration(
@@ -86,8 +86,8 @@ class MyApp extends StatelessWidget {
                       },
                       dayBuilder: (selectedMonth, day, selectedDay) {
                         final isDayOfTheSelectedMonth =
-                            day.getMonth() == selectedMonth.getMonthNumber() &&
-                                day.getYear() == selectedMonth.getYear();
+                            day.month == selectedMonth.number &&
+                            day.year == selectedMonth.year;
 
                         return Column(
                           children: [
@@ -96,7 +96,7 @@ class MyApp extends StatelessWidget {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      day.getDay().toString(),
+                                      day.day.toString(),
                                       style: TextStyle(
                                         color: isDayOfTheSelectedMonth
                                             ? Colors.green
@@ -120,10 +120,7 @@ class MyApp extends StatelessWidget {
                         if (weekDayNumber == DateTime.saturday) name = "Суб";
                         if (weekDayNumber == DateTime.sunday) name = "Воскр";
 
-                        return Text(
-                          name,
-                          textAlign: TextAlign.center,
-                        );
+                        return Text(name, textAlign: TextAlign.center);
                       },
                     ),
                   ),

@@ -1,12 +1,14 @@
 {
-    "name": "example",
-    "short_name": "example",
-    "start_url": ".",
+    "id": "./",
+    "name": "Calendar UI examples",
+    "short_name": "Calendar UI",
+    "start_url": "./",
+    "scope": "./",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
-    "orientation": "portrait-primary",
+    "description": "Interactive month and week examples for calendar_ui.",
+    "orientation": "landscape",
     "prefer_related_applications": false,
     "icons": [
         {

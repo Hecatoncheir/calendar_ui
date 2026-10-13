@@ -6,26 +6,18 @@ void main() {
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-  late final CalendarBlocInterface calendarBloc;
-
-  @override
-  void initState() {
-    super.initState();
-
-    final dateTime = DateTime.now();
-    calendarBloc = CalendarBloc(dateTime);
-  }
+  final controller = CalendarController(DateTime.now());
 
   @override
   void dispose() {
-    calendarBloc.dispose();
+    controller.dispose();
     super.dispose();
   }
 
@@ -38,53 +30,32 @@ class _MyAppState extends State<MyApp> {
             Row(
               children: [
                 GestureDetector(
-                  onTap: () {
-                    const event = SelectPrevWeek();
-                    calendarBloc.getController().add(event);
-                  },
+                  onTap: controller.prevWeek,
                   child: const Text("prev week"),
                 ),
                 const SizedBox(width: 12),
                 GestureDetector(
-                  onTap: () {
-                    const event = SelectNextWeek();
-                    calendarBloc.getController().add(event);
-                  },
+                  onTap: controller.nextWeek,
                   child: const Text("next week"),
                 ),
               ],
             ),
-            StreamBuilder<Object>(
-                stream: calendarBloc.getStream().where(
-                    (state) => state is WeekSelect || state is SelectedWeek),
-                builder: (context, snapshot) {
-                  final state = snapshot.data;
-                  if (state == null) return Container();
-
-                  if (state is WeekSelect) {
-                    return Text(
-                      "${state.year.getYearNumber()} - ${state.month.getMonthNumber()} - ${state.week.getWeekNumberInMonth()}",
-                    );
-                  }
-
-                  if (state is SelectedWeek) {
-                    return Text(
-                      "${state.year.getYearNumber()} - ${state.month.getMonthNumber()} - ${state.week.getWeekNumberInMonth()}",
-                    );
-                  }
-
-                  return Container();
-                }),
+            ValueListenableBuilder(
+              valueListenable: controller,
+              builder: (context, selection, _) => Text(
+                "${selection.year} - ${selection.month} - ${selection.weekNumber}",
+              ),
+            ),
             Expanded(
               child: Row(
                 children: [
                   Expanded(
                     child: CalendarWeekUI(
-                      calendarBloc: calendarBloc,
+                      controller: controller,
                       cellBuilder: (context, child, month, weekNumber, day) {
                         final isDayIsWeekend =
-                            day.getWeekday() == DateTime.saturday ||
-                                day.getWeekday() == DateTime.sunday;
+                            day.weekday == DateTime.saturday ||
+                            day.weekday == DateTime.sunday;
 
                         return Container(
                           decoration: BoxDecoration(
@@ -93,20 +64,16 @@ class _MyAppState extends State<MyApp> {
                                 : Colors.transparent,
                             border: Border.all(color: Colors.black),
                           ),
-                          child: Column(
-                            children: [
-                              child,
-                            ],
-                          ),
+                          child: Column(children: [child]),
                         );
                       },
                       dayBuilder: (selectedMonth, day, selectedDay) {
                         final isDayOfTheSelectedMonth =
-                            day.getMonth() == selectedMonth.getMonthNumber() &&
-                                day.getYear() == selectedMonth.getYear();
+                            day.month == selectedMonth.number &&
+                            day.year == selectedMonth.year;
 
                         return Text(
-                          day.getDay().toString(),
+                          day.day.toString(),
                           style: TextStyle(
                             color: isDayOfTheSelectedMonth
                                 ? Colors.green
@@ -124,10 +91,7 @@ class _MyAppState extends State<MyApp> {
                         if (weekDayNumber == DateTime.saturday) name = "Суб";
                         if (weekDayNumber == DateTime.sunday) name = "Воскр";
 
-                        return Text(
-                          name,
-                          textAlign: TextAlign.center,
-                        );
+                        return Text(name, textAlign: TextAlign.center);
                       },
                     ),
                   ),

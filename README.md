@@ -1,16 +1,21 @@
 # calendar_ui
 
-![Preview gif](/preview.gif)
+Month and week Flutter widgets backed by the local `calendar` package. The
+widgets accept builders for headers, cells, days, week numbers, and month names
+so the application can provide its own visual design.
 
-## Getting Started
+What they show is a `CalendarController`, a `ValueNotifier` of an immutable
+`CalendarSelection`: the year, the month, the week of the month and the
+selected day. Page it with `prevWeek()`, `nextWeek()`, `prevMonth()` and
+`nextMonth()`, or move it with `selectWeek()` and `selectDay()`; listen to it
+with a `ValueListenableBuilder`. Weeks are counted by date, so a month that
+starts on a Monday keeps its first week and one that ends on a Sunday its
+last. Dispose of the controller along with the widget that owns it.
 
-This project is a starting point for a Flutter application.
+See `example/lib/calendar_month_ui.dart` and
+`example/lib/calendar_week_ui.dart` for runnable examples.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```bash
+flutter test
+flutter analyze
+```

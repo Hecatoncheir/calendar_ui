@@ -1,16 +1,12 @@
-# example
+# calendar_ui examples
 
-A new Flutter project.
+The example project has separate entrypoints for the month and week widgets.
+Run either target from this directory:
 
-## Getting Started
+```bash
+flutter run -d chrome --target lib/calendar_month_ui.dart
+flutter run -d chrome --target lib/calendar_week_ui.dart
+```
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Both entrypoints are built by the root GitLab pipeline to keep the package
+examples compatible with the workspace Flutter version.
