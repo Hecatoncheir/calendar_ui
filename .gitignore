@@ -19,3 +19,7 @@ doc/api/
 *.js_
 *.js.deps
 *.js.map
+
+# Архивы, подготовленные для GitHub Release
+dist/
+__pycache__/

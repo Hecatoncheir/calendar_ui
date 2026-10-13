@@ -1,6 +1,6 @@
 name: calendar_ui
 description: Calendar month and week widgets used by LKO Planner.
-version: 0.5.0
+version: 0.5.1
 publish_to: none
 
 environment:
@@ -13,7 +13,7 @@ dependencies:
   calendar:
     git:
       url: https://github.com/Hecatoncheir/calendar.git
-      ref: ab1c4aba057e2006925f4cfd06191f625f4d0af7
+      ref: v0.3.1
   meta: ^1.19.0
 
 dev_dependencies:

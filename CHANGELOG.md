@@ -1,14 +1,25 @@
+# История изменений
+
+## 0.5.1 - 2026-10-13
+
+- Зависимость `calendar` закреплена на релизе `v0.3.1`.
+- В приложении-примере `cupertino_icons` обновлён до `^2.0.0`.
+- README библиотеки и примера переведены на русский язык: добавлены инструкции
+  подключения, запуска, настройки контроллера и скриншоты месяца и недели.
+- Добавлен GitHub Actions: анализ, тесты и сборка двух web-примеров.
+- Настроены подготовка исходников и web-архивов с SHA-256 и публикация
+  GitHub Release по тегу `vX.Y.Z` после успешных проверок.
+
 ## 0.5.0
 
-- `CalendarMonthUI` takes `weekNumberWidth`: the column of week numbers is
-  that wide instead of as wide as a day, and the header leaves the same room
-  above it.
+- Добавлен `weekNumberWidth` у `CalendarMonthUI`: ширина колонки номеров недель
+  задаётся отдельно от ширины дней; заголовок учитывает эту ширину.
 
 ## 0.4.0
 
-- The month and week widgets run over a `CalendarController`, a
-  `ValueNotifier` of an immutable `CalendarSelection`, instead of the
-  stream-based `CalendarBloc`; paging never skips a week.
-- Weeks come from `fullWeeksOfMonth` of `calendar` 0.3.0.
-- The widgets fit the window instead of one fixed minimum size.
-- Moved into the application workspace and updated for Flutter 3.47.
+- Виджеты месяца и недели переведены с потокового `CalendarBloc` на
+  `CalendarController`, основанный на `ValueNotifier<CalendarSelection>`.
+- Недельная навигация следует датам без пропуска недель.
+- Недели формируются через `fullWeeksOfMonth` из `calendar` версии 0.3.0.
+- Виджеты адаптируются к размеру окна вместо фиксированного минимального размера.
+- Пакет перенесён в рабочую область приложения и обновлён для Flutter 3.47.

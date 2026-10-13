@@ -1,0 +1,83 @@
+name: CI и релиз
+
+on:
+  push:
+    branches: [master]
+    tags: ['v*']
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  check:
+    name: Проверка и подготовка
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    outputs:
+      tag: ${{ steps.metadata.outputs.tag }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
+        with:
+          flutter-version: '3.47.7'
+          channel: stable
+      - name: Проверка версии и CHANGELOG
+        id: metadata
+        run: python3 .github/scripts/prepare_release.py --check
+      - name: Проверка релизных правил
+        run: python3 -m unittest discover -s .github/scripts -p 'test_*.py'
+      - name: Зависимости библиотеки и примера
+        run: |
+          flutter pub get
+          flutter pub get --directory example
+      - name: Статический анализ
+        run: flutter analyze --fatal-infos
+      - name: Тесты
+        run: flutter test
+      - name: Сборка web-примеров
+        working-directory: example
+        run: |
+          flutter build web --release -t lib/calendar_month_ui.dart --output build/release/month
+          flutter build web --release -t lib/calendar_week_ui.dart --output build/release/week
+      - name: Подготовка архивов и контрольных сумм
+        run: python3 .github/scripts/prepare_release.py
+      - name: Сохранение файлов релиза
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: release-${{ steps.metadata.outputs.tag }}
+          path: dist/*
+          if-no-files-found: error
+          retention-days: 14
+
+  release:
+    name: Публикация GitHub Release
+    if: startsWith(github.ref, 'refs/tags/v') && github.event_name == 'push'
+    needs: check
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: release-${{ needs.check.outputs.tag }}
+          path: dist
+      - name: Публикация проверенного релиза
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ needs.check.outputs.tag }}
+        run: |
+          gh release create "$RELEASE_TAG" dist/* \
+            --verify-tag --draft --title "$RELEASE_TAG" \
+            --notes-file dist/RELEASE_NOTES.md
+          gh release edit "$RELEASE_TAG" --draft=false --latest
